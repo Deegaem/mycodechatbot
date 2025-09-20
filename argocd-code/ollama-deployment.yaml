@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+  namespace: backend
+  labels:
+    app: ollama
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      containers:
+        - name: ollama
+          image: ollama/ollama:latest
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - mountPath: /my-nfs-data
+              name: ollama-volume
+            - mountPath: ./modelfiles:/modelfiles
+              name: ollama-volume
+            
+      volumes:
+        - name: ollama-volume
+          persistentVolumeClaim:
+            claimName: ollama-pv-claim
