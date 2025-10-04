@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ollama-webui
-  namespace: codellama
+  namespace: argocd
   labels:
     app: ollama-webui
 spec:
@@ -20,8 +20,7 @@ spec:
           image: ghcr.io/ollama-webui/ollama-webui:main
           env:
             - name: OLLAMA_API_BASE_URL
-              value: http://ollama-service:80/api
-
+              value: http://ollama-service:11434/api
           ports:
             - name: http
               containerPort: 8080

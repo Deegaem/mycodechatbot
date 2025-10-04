@@ -1,21 +1,59 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: ollama
+#   namespace: codellama
+# spec:
+#   selector:
+#     matchLabels:
+#       name: ollama
+#   template:
+#     metadata:
+#       labels:
+#         name: ollama
+#     spec:
+#       containers:
+#       - name: ollama
+#         image: ollama/ollama:latest
+#         ports:
+#         - name: http
+#           containerPort: 11434
+#           protocol: TCP
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ollama
   namespace: codellama
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      name: ollama
+      app: ollama
   template:
     metadata:
       labels:
-        name: ollama
+        app: ollama
     spec:
       containers:
       - name: ollama
         image: ollama/ollama:latest
         ports:
-        - name: http
-          containerPort: 11434
-          protocol: TCP
+        - containerPort: 11434
+        env:
+        - name: OLLAMA_HOST
+          value: "0.0.0.0"
+        volumeMounts:
+        - name: ollama-data
+          mountPath: /root/.ollama
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "8Gi"
+            cpu: "4000m"
+      volumes:
+      - name: ollama-data
+        persistentVolumeClaim:
+          claimName: ollama-pvc

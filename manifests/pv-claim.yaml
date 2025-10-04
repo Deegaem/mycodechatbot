@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ollama-pv-claim
+  name: ollama-pvc
 spec:
   storageClassName: do-block-storage
   accessModes:
