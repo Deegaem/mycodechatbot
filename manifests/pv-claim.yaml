@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: ollama-pv-claim
 spec:
-  storageClassName: ollama-storage
+  storageClassName: do-block-storage
   accessModes:
     - ReadWriteOnce
   resources:
